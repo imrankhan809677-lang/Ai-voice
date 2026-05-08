@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pro AI Studio (Fully Working)</title>  <style>
+    body{
+      margin:0;
+      font-family:Arial;
+      background:#0b1220;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+    }
+
+    .container{
+      width:95%;
+      max-width:900px;
+      background:#111827;
+      padding:20px;
+      border-radius:14px;
+    }
+
+    h2{text-align:center;}
+
+    textarea{
+      width:100%;
+      height:120px;
+      padding:12px;
+      border-radius:10px;
+      border:none;
+      outline:none;
+      margin-top:10px;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    button{
+      flex:1;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:bold;
+      background:#3b82f6;
+      color:white;
+    }
+
+    button:hover{background:#2563eb;}
+
+    img{
+      width:100%;
+      margin-top:15px;
+      border-radius:12px;
+      display:none;
+    }
+
+    audio{
+      width:100%;
+      margin-top:10px;
+    }
+
+    .panel{
+      margin-top:15px;
+      background:#0f172a;
+      padding:10px;
+      border-radius:10px;
+      max-height:200px;
+      overflow:auto;
+      font-size:12px;
+    }
+
+    .item{margin-bottom:5px;opacity:0.8;}
+  </style></head><body><div class="container">  <h2>🔥 Pro AI Studio (No API Key Needed)</h2>  <textarea id="text" placeholder="Urdu or English prompt likho..."></textarea>  <div class="row">
+    <button onclick="enhance()">✨ Enhance Prompt</button>
+    <button onclick="generateImage()">🖼 Image</button>
+    <button onclick="generateVoice()">🎤 Voice</button>
+    <button onclick="clearHistory()" style="background:#ef4444">🗑 Clear</button>
+  </div>  <img id="img" />
+  <audio id="audio" controls></audio>  <h3>📜 History</h3>
+  <div class="panel" id="history"></div></div><script>
+
+let history=[];
+
+// ✨ Prompt enhancer
+function enhance(){
+  let t=document.getElementById("text").value;
+  if(!t)return;
+  document.getElementById("text").value=
+  "Ultra realistic cinematic scene: "+t+", 4K, highly detailed, soft lighting, depth of field, professional photography";
+}
+
+// 🖼 IMAGE (FREE API - NO KEY)
+function generateImage(){
+  let prompt=document.getElementById("text").value;
+  if(!prompt)return;
+
+  let url="https://image.pollinations.ai/prompt/"+encodeURIComponent(prompt);
+
+  let img=document.getElementById("img");
+  img.src=url;
+  img.style.display="block";
+
+  addHistory("Image Generated");
+}
+
+// 🎤 VOICE (Browser built-in)
+function generateVoice(){
+  let text=document.getElementById("text").value;
+  if(!text)return;
+
+  let speech=new SpeechSynthesisUtterance(text);
+  speech.lang="ur-PK"; // Urdu try
+  speech.rate=1;
+  speech.pitch=1;
+
+  speechSynthesis.speak(speech);
+
+  addHistory("Voice Played");
+}
+
+// 📜 HISTORY
+function addHistory(t){
+  history.push(t+" - "+new Date().toLocaleTimeString());
+  render();
+}
+
+function render(){
+  let box=document.getElementById("history");
+  box.innerHTML="";
+  history.forEach(h=>{
+    let d=document.createElement("div");
+    d.className="item";
+    d.innerText=h;
+    box.appendChild(d);
+  });
+}
+
+function clearHistory(){
+  history=[];
+  render();
+}
+
+</script></body>
+</html>
